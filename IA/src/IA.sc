@@ -1,6 +1,8 @@
+// Base de datos (inventario)
 case class Producto(nombre: String, categoria: String, precios: List[Double])
 case class ProductoPromedio(producto: Producto, promedio: Double)
 
+// Inventario completo
 val inventario: List[Producto] = List(
   Producto("Producto 1", "Categoria 1", List(10.5, 11.5, 12.5, 13.5)),
   Producto("Producto 2", "Categoria 2", List(11.0, 12.0, 13.0, 14.0)),
@@ -52,56 +54,48 @@ val inventario: List[Producto] = List(
   Producto("Producto 48", "Categoria 3", List(34.0, 35.0, 36.0, 37.0)),
   Producto("Producto 49", "Categoria 4", List(34.5, 35.5, 36.5, 37.5)),
   Producto("Producto 50", "Categoria 5", List(35.0, 36.0, 37.0, 38.0))
+)
 
+// Método que busca el producto más valioso
 def productoMasValioso(
-                        inventario: List[Producto],
+                        lista: List[Producto],
                         valorBase: Double,
                         minPrecios: Int
                       ): Option[ProductoPromedio] = {
 
-  // 1) Filtrar productos con suficientes precios y max > valorBase
-  def filtrarProductos(lista: List[Producto]): List[Producto] = {
-    lista.filter { p =>
-      p.precios.length >= minPrecios && p.precios.max > valorBase
-    }
+  // Filtrar productos válidos manualmente
+  val filtrados = lista.filter { p =>
+    p.precios.length >= minPrecios && p.precios.max > valorBase
   }
 
-  val productosValidos = filtrarProductos(inventario)
+  if (filtrados.isEmpty) return None
 
-  // Si no hay productos válidos, no hay resultado
-  if (productosValidos.isEmpty) return None
-
-  // 2) Calcular promedio manualmente
-  def promedio(lista: List[Double]): Double = {
+  // Calcular promedio a mano
+  def promedio(nums: List[Double]): Double = {
     var suma = 0.0
-    for (x <- lista) suma += x
-    suma / lista.length
+    for (n <- nums) suma += n
+    suma / nums.length
   }
 
-  // 3) Construir lista de ProductoPromedio
-  def construirListaPromedios(lista: List[Producto]): List[ProductoPromedio] = {
-    var resultado: List[ProductoPromedio] = Nil
+  // Crear lista de ProductoPromedio
+  var listaProm: List[ProductoPromedio] = Nil
+  for (p <- filtrados) {
+    val prom = promedio(p.precios)
+    listaProm = ProductoPromedio(p, prom) :: listaProm
+  }
 
-    for (p <- lista) {
-      val prom = promedio(p.precios)
-      resultado = ProductoPromedio(p, prom) :: resultado
+  // Elegir el de mayor promedio
+  var mejor = listaProm.head
+  for (pp <- listaProm.tail) {
+    if (pp.promedio > mejor.promedio) {
+      mejor = pp
     }
-
-    resultado
   }
 
-  val listaPromedios = construirListaPromedios(productosValidos)
-
-  // 4) Seleccionar el de mayor promedio
-  def maxPromedio(lista: List[ProductoPromedio]): ProductoPromedio = {
-    var mejor = lista.head
-    for (pp <- lista.tail) {
-      if (pp.promedio > mejor.promedio) {
-        mejor = pp
-      }
-    }
-    mejor
-  }
-
-  Some(maxPromedio(listaPromedios))
+  Some(mejor)
 }
+
+// Ejemplo de uso
+val resultado = productoMasValioso(inventario, 20.0, 4)
+println(resultado)
+
