@@ -95,7 +95,7 @@ def productoMasValioso(
   Some(mejor)
 }
 
-// Ejemplo de uso
+// Ejemplo 
 val resultado = productoMasValioso(inventario, 20.0, 4)
 println(resultado)
 
