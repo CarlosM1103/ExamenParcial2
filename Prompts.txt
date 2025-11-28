@@ -1,0 +1,11 @@
+Explícame paso a paso cómo resolver este problema en Scala sin usar groupBy ni tuplas. Quiero aplicar un algoritmo manual que filtre productos, calcule promedios y encuentre el mayor promedio, siguiendo una idea general como la siguiente:
+- Filtrar los productos que tienen suficientes precios en su lista y cuyo precio máximo es mayor que el valor base.
+- Para cada producto que pasó el filtro, calcular el promedio de su lista de precios (suma dividido para cantidad).
+- Construir, para cada producto válido, un objeto ProductoPromedio que almacene el producto original y su promedio.
+- Recorrer la lista de ProductoPromedio y seleccionar aquel que tenga el valor de promedio más alto.
+
+ El código debe filtrar productos según requisitos:
+Tienen al menos una cierta cantidad mínima de precios registrados.
+Tienen un precio máximo en su historial mayor a un valor base (por ejemplo, 20.0).
+
+Explícame el código como si fueras mi profesor, diciendome por qué no se puede usar groupBy ni tuplas y cómo resolverlo de forma manual.
