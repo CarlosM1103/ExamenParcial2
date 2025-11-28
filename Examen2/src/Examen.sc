@@ -57,19 +57,17 @@ case class ProductoPromedio(producto: Producto, promedio: Double)
 def productoMasValioso(inventario: List[Producto], valorBase: Double, cantidadMinima: Int): ProductoPromedio = {
   val productosValidos = inventario.filter(p => p.precios.size >= cantidadMinima && p.precios.max > valorBase)
 
-  val productosConPromedio = productosValidos.map { p =>
-    val promedio = p.precios.sum / p.precios.size
+  val productosConPromedio = productosValidos.map { p => val promedio = p.precios.sum / p.precios.size
     ProductoPromedio(p, promedio)
   }
-
   productosConPromedio.maxBy(_.promedio)
 }
-
 
 val valorBase = 20.0
 val cantidadMinima = 4
 
 val resultado = productoMasValioso(inventario, valorBase, cantidadMinima)
+
 println(s"El producto más valioso es: ${resultado.producto.nombre} con un promedio de ${resultado.promedio}")
 
 
